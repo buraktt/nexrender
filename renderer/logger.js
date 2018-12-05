@@ -1,6 +1,6 @@
 const LogLevel = require('loglevel-colored-level-prefix')
 
-const options = { prefix, level: 'error' }
+const options = { prefix: '', level: 'error' }
 
 const logger = LogLevel(options)
 
