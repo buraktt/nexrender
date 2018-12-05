@@ -4,6 +4,7 @@ const mkdirp    = require('mkdirp');
 const path      = require('path');
 const fs        = require('fs-extra');
 const async     = require('async');
+const logger    = require('../logger');
 
 const RESULTS_DIR = process.env.RESULTS_DIR || 'results';
 
@@ -28,7 +29,7 @@ module.exports = function(project) {
                 project.settings.outputExt.toLowerCase() 
             ) !== -1
         ) {
-            console.info(`[${project.uid}] applying actions: found jpeg sequence...`);
+            logger.debug(`[${project.uid}] applying actions: found jpeg sequence...`);
             
             // scan folder
             fs.readdir(project.workpath, (err, files) => {
@@ -76,7 +77,7 @@ module.exports = function(project) {
 
         // remove file if exists 
         fs.unlink(dst, () => {
-            console.info(`[${project.uid}] applying actions: moving result file...`);
+            logger.debug(`[${project.uid}] applying actions: moving result file...`);
 
             // start file moving
             fs.move(src, dst, (err) => {

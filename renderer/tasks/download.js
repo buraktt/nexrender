@@ -5,6 +5,7 @@ const fs       = require('fs-extra');
 const path     = require('path');
 const AWS      = require('aws-sdk');
 const url      = require('url');
+const logger    = require('../logger');
 
 
 function isLocalPath(src) {
@@ -40,7 +41,7 @@ function downloadFromS3(bucket, key, dstDir, dstName) {
 module.exports = function(project) {
     return new Promise((resolve, reject) => {
 
-        console.info(`[${project.uid}] downloading assets...`);
+        logger.debug(`[${project.uid}] downloading assets...`);
 
         // iterate over each asset to check for custom template
         for (let asset of project.assets) {

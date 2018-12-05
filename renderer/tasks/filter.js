@@ -3,11 +3,12 @@
 const jimp  = require('jimp');
 const async = require('async');
 const path  = require('path');
+const logger    = require('../logger');
 
 module.exports = function(project) {
     return new Promise((resolve, reject) => {
 
-        console.info(`[${project.uid}] filtering image assets...`);
+        logger.debug(`[${project.uid}] filtering image assets...`);
 
         // initialize empty call-queue array
         let calls = [];

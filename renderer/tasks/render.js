@@ -2,6 +2,7 @@
 
 const child_process = require('child_process');
 const path          = require('path');
+const logger    = require('../logger');
 
 // add ability to override
 let spawn = child_process.spawn;
@@ -12,7 +13,7 @@ let spawn = child_process.spawn;
 module.exports = function(project) {
     return new Promise((resolve, reject) => {
 
-        console.info(`[${project.uid}] rendering project...`);
+        logger.debug(`[${project.uid}] rendering project...`);
 
         // create container for data and parameters
         let aedata = [];

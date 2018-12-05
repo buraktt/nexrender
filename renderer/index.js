@@ -13,6 +13,8 @@ const verify        = require('./tasks/verify');
 const actions       = require('./tasks/actions');
 const cleanup       = require('./tasks/cleanup');
 
+const logger         = require('./logger');
+
 const Project       = require('../api/models/project');
 
 const API_REQUEST_INTERVAL = process.env.API_REQUEST_INTERVAL || 15 * 60 * 1000; // 15 minutes
@@ -41,9 +43,7 @@ function applyTasks(project, resolve, reject) {
         .then(cleanup)
         .then((project) => {
 
-            console.info('----------------------------');
-            console.info(`[${project.uid}] project finished`);
-            console.info('----------------------------\n');
+            logger.debug(`[${project.uid}] project finished`);
 
             // project is finished
             project.finish().then(() => {
@@ -52,11 +52,8 @@ function applyTasks(project, resolve, reject) {
         })
         .catch((err) => {
 
-            console.info('--------------------------');
-            console.info(`[${project.uid}] project failed`);
-            console.info('--------------------------\n');
-
-            console.info('Error message:', err.message || err);
+            logger.error(`[${project.uid}] project failed`);
+            logger.error('Error message:', err.message || err);
 
             // project encountered an error
             project.failure(err).then(() => {
@@ -73,12 +70,12 @@ function applyTasks(project, resolve, reject) {
 function requestNextProject() {
     return new Promise((resolve, reject) => {
 
-        console.info('making request for projects...');
+        logger.debug('making request for projects...');
 
         // request list
         api.get().then((results) => {
 
-            console.info('looking for suitable projects...');
+            logger.debug('looking for suitable projects...');
 
             // if list empty - reject
             if (!results || results.length < 1) {
@@ -111,7 +108,7 @@ function startRecursion() {
     requestNextProject().then((project) => {
         startRender(project).then(startRecursion).catch(startRecursion)
     }).catch(() => {
-        console.info('request failed or no suitable projects found. retrying in:', API_REQUEST_INTERVAL, 'msec');
+        logger.error('request failed or no suitable projects found. retrying in:', API_REQUEST_INTERVAL, 'msec');
         setTimeout(() => { startRecursion() }, API_REQUEST_INTERVAL);
     });
 }
@@ -121,9 +118,9 @@ function startRecursion() {
  * @param  {Object} opts Options object
  */
 function start(opts) {
-    console.info('=========[RENDERNODE]=========\n')
-    console.info('nexrender.renderer is starting\n');
-    console.info('------------------------------');
+    logger.debug('=========[RENDERNODE]=========\n')
+    logger.debug('nexrender.renderer is starting\n');
+    logger.debug('------------------------------');
 
     opts = opts || {};
 

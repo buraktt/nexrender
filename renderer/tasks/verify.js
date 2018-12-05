@@ -3,6 +3,7 @@
 const path  = require('path');
 const fs    = require('fs-extra');
 const dir   = require('node-dir');
+const logger    = require('../logger');
 
 /**
  * Function tries to read logs from folder with project
@@ -28,7 +29,7 @@ function getLogs(project, callback) {
 module.exports = function(project) {
     return new Promise((resolve, reject) => {
 
-        console.info(`[${project.uid}] verifying project...`);
+        logger.debug(`[${project.uid}] verifying project...`);
 
         //TEMP: workaround for JPEG sequences mode
         if (project.settings && 
@@ -37,7 +38,7 @@ module.exports = function(project) {
                 project.settings.outputExt.toLowerCase() 
             ) !== -1
         ) {
-            console.info(`[${project.uid}] verifying: found jpeg sequence...`);
+            logger.debug(`[${project.uid}] verifying: found jpeg sequence...`);
             return resolve(project);
         }
 

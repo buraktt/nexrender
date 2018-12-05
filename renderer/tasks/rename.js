@@ -4,6 +4,7 @@ const fs        = require('fs-extra');
 const path      = require('path');
 const url      = require('url');
 const async     = require('async');
+const logger    = require('../logger');
 
 /**
  * This task renames assets from their original name
@@ -12,7 +13,7 @@ const async     = require('async');
 module.exports = function(project) {
     return new Promise((resolve, reject) => {
 
-        console.info(`[${project.uid}] renaming assets...`);
+        logger.debug(`[${project.uid}] renaming assets...`);
 
         // initialize empty call-queue array
         let calls = [];

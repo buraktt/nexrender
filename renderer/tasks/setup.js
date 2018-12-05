@@ -3,6 +3,7 @@
 const mkdirp      = require('mkdirp');
 const path        = require('path');
 const fs          = require('fs-extra');
+const logger    = require('../logger');
 
 const TEMPLATES_DIRECTORY   = process.env.TEMPLATES_DIRECTORY   || 'templates';
 const TEMP_DIRECTORY        = process.env.TEMP_DIRECTORY        || 'temp';
@@ -13,7 +14,7 @@ const TEMP_DIRECTORY        = process.env.TEMP_DIRECTORY        || 'temp';
 module.exports = function(project) {
     return new Promise((resolve, reject) => {
 
-        console.info(`[${project.uid}] setting up project...`);
+        logger.debug(`[${project.uid}] setting up project...`);
 
         // setup project's workpath
         project.workpath   = path.join(TEMP_DIRECTORY,      project.uid);

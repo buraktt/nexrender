@@ -3,6 +3,7 @@
 const path      = require('path');
 const fs        = require('fs-extra');
 const async     = require('async');
+const logger    = require('../logger');
 
 function getAllExpressions(data) {
     return data.match(/\<expr bdata=\"([a-f0-9]+)\"\s*\/\>/gi);
@@ -75,7 +76,7 @@ function processTemplateFile(project, callback) {
 module.exports = function(project) {
     return new Promise((resolve, reject) => {
 
-        console.info(`[${project.uid}] patching project...`);
+        logger.debug(`[${project.uid}] patching project...`);
 
         // Iterate over assets, 
         // skip those that are not data/script files, 
